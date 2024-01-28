@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="Stylesheet" href="app.component.css">
+      <style>
+    /* Style to center the form */
+    body, html {
+      height: 100%;
+    }
+    .center-container {
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      margin-top: 20px;
+    }
+    body {
+      background-image: url('assets/whitebg2.0.jpg');
+    background-size:  auto 50vw 100vh;
+    background-position: left top;
+    background-repeat: repeat;
+
+    }
+  </style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg  p-3" style="background-color: black;">
+    <div class="container-fluid">
+
+      <div class="d-flex align-items-center justify-content-start">
+        <a class="navbar-brand me-3" href="#">
+          <img src="assets\gymLogo2.jpeg" alt="" width="200" height="60" class="d-inline-block align-text-top">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        </div>
+      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto ">
+          <li class="nav-item">
+            <a class="nav-link mx-2 active" [routerLink]="['/update-trainer']" routerLinkActive="router-link-active" style="color: #ffffff;">UpdateTrainer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2 active" [routerLink]="['/fetch-trainer-by-id']" routerLinkActive="router-link-active" style="color: #ffffff;">IdentifyTrainer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2 active" [routerLink]="['/fetch-all']" routerLinkActive="router-link-active" style="color: #ffffff;">RetrieveTrainer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2 active" [routerLink]="['/trainer-in-each-city']" routerLinkActive="router-link-active" style="color: #ffffff;">EliteMentors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2 active" aria-current="page" href="#" style="color: #ffffff;">LogOut</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    </nav>
+
+
+    <div *ngIf="trainerAddedSuccessfully" class="text-center mt-3">
+      <span style="color:green; font-weight: bolder;">Trainer Added Successfully</span>
+    </div>
+    <div class="container mt-5" style="padding-bottom: 40px;">
+    <div class="center-container">
+      <form  #trainerForm="ngForm" (ngSubmit)="submitForm(trainerForm)" style="background-color: black; padding: 20px;">
+        <div class="row mb-4">
+          <div class="col">
+            <div data-mdb-input-init class="form-outline">
+              <label class="form-label" for="form6Example1" style="color:white">Trainer ID</label>
+              <input #trainerId="ngModel" required pattern="[0-9]+" type="text" class="form-control" ngModel name="trainerId">
+              <div *ngIf="trainerId.invalid && (trainerId.dirty || trainerId.touched)" class="text-danger">
+                <div *ngIf="trainerId.errors?.['required']">Trainer ID is required.</div>
+                <div *ngIf="trainerId.errors?.['pattern']">Trainer ID contain Numerics only.</div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div data-mdb-input-init class="form-outline">
+              <label class="form-label" for="form6Example2"style="color:white">Trainer Name</label>
+              <input
+                #trainerName="ngModel"
+                required
+                pattern="[a-zA-Z ]*"
+                minlength="1"
+                maxlength="100"
+                type="text"
+                class="form-control"
+                [(ngModel)]="model.trainerName"
+                name="trainerName"
+              />
+              <div *ngIf="trainerName.invalid && (trainerName.dirty || trainerName.touched)" class="text-danger">
+                <div *ngIf="trainerName.errors?.['required']">Trainer Name is required.</div>
+                <div *ngIf="trainerName.errors?.['pattern']">Trainer Name should contain letters only.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="row mb-4">
+        <div class="col">
+          <div data-mdb-input-init class="form-outline">
+            <label class="form-label" for="form6Example1" style="color:white">Trainer Experience</label>
+            <input #trainerexperience="ngModel" required pattern="[0-9]+" type="text" class="form-control"  ngModel name="trainerExperience">
+            <div *ngIf="trainerexperience.invalid && (trainerexperience.dirty || trainerexperience.touched)" class="text-danger">
+              <div *ngIf="trainerexperience.errors?.['required']">Trainer Experience is required.</div>
+              <div *ngIf="trainerexperience.errors?.['pattern']">Trainer Experience contain Numerics only.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+        <div class=" mb-1 ">
+          <label for="exampleInputEmail1" class="form-label" style="color:white">Description</label>
+          <select  #description="ngModel" required type="text" class="form-select"  ngModel name="descriptionId">
+            <option value="">Select Description</option>
+            <option value="1">Certified Personal Trainer with 10+ years of experience specializing in weightlifting and strength training</option>
+            <option value="2">2	Former professional athlete with a passion for helping clients achieve their fitness goals</option>
+            <option value="3">Certified Yoga and Pilates instructor with a focus on mindfulness and flexibility</option>
+            <option value="4">Nutrition expert dedicated to promoting healthy eating habits and sustainable lifestyle changes</option>
+            <option value="5">Experienced marathon coach who has trained athletes to achieve personal bests and complete races</option>
+            <option value="6">Lose 10 pounds by the end of the year.</option>
+            <option value="7">Run a half-marathon within the next six months.</option>
+          </select>
+          <span *ngIf="description.touched && description.invalid" class="text-danger">
+            Description ID is required.
+          </span>
+        </div>
+      </div>
+      </div>
+
+
+      <div class="row mb-4">
+        <div class="col">
+          <div class=" mb-1 ">
+            <label for="exampleInputEmail1" class="form-label" style="color:white">City </label>
+          <select  #city="ngModel" required type="text" class="form-select"  ngModel name="cityId">
+            <option value="">Select City </option>
+            <option value="1">New York</option>
+            <option value="2">Los Angeles
+            <option value="3">Toronto</option>
+            <option value="4">London</option>
+            <option value="5">Manchester</option>
+            <option value="6">Chennai</option>
+            <option value="7">Dindugal</option>
+            <option value="30">Chennai</option>
+
+          </select>
+          <span *ngIf="city.touched && city.invalid" class="text-danger">
+            City  is required.
+          </span>
+          </div>
+        </div>
+        <div class="col">
+          <div class=" mb-1 ">
+
+            <label for="exampleInputEmail1" class="form-label" style="color:white">State </label>
+            <select  #state="ngModel" required type="text" class="form-select"  ngModel name="stateId">
+              <option value="">Select State </option>
+              <option value="1">New York</option>
+              <option value="2">California</option>
+              <option value="3">Ontario</option>
+              <option value="4">TamilNadu</option>
+              <option value="5">Manchester</option>
+              <option value="40">TamilNadu</option>
+
+
+            </select>
+            <span *ngIf="state.touched && state.invalid" class="text-danger">
+              State  is required.
+            </span>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row mb-4">
+        <div class="col">
+          <div class=" mb-1 ">
+            <label for="exampleInputEmail1" class="form-label" style="color:white">Country </label>
+            <select  #country="ngModel" required type="text" class="form-select"  ngModel name="countryId">
+              <option value="">Select Country </option>
+              <option value="1">United States</option>
+              <option value="2">Canada</option>
+              <option value="3">United Kingdom</option>
+              <option value="6">India</option>
+
+
+            </select>
+            <span *ngIf="country.touched && country.invalid" class="text-danger">
+              Country  is required.
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- Number input -->
+      <div data-mdb-input-init class="form-outline mb-4">
+        <label class="form-label" for="form6Example6" style="color:white">Mobile Number</label>
+        <input #trainernumber="ngModel" required pattern="[0-9]+" type="text" class="form-control"  ngModel name="trainerNumber">
+        <div *ngIf="trainernumber.invalid && (trainernumber.dirty || trainernumber.touched)" class="text-danger">
+          <div *ngIf="trainernumber.errors?.['required']">Trainer Number is required.</div>
+          <div *ngIf="trainernumber.errors?.['pattern']">Trainer Number should contain Numerics only.</div>
+        </div>
+      </div>
+
+      <!-- Submit button -->
+      <div class="col text-center">
+        <button data-mdb-ripple-init type="submit" class="btn btn-primary">ADD</button>
+
+      </div>
+    </form>
+
+  </div>
+  </div>
+
+
+
+</body>
+</html>
